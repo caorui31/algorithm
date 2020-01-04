@@ -1,0 +1,45 @@
+/*
+ * @lc app=leetcode.cn id=92 lang=java
+ *
+ * [92] 反转链表 II
+ * 反转从位置 m 到 n 的链表。请使用一趟扫描完成反转。
+ */
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        
+        if(head == null || m > n || m == n) {
+            return head;
+        }
+
+        // 增加一个哨兵位方便处理
+        ListNode ans = new ListNode(-1);
+        ans.next = head;
+
+        // pre位不需要排序的m的前面一个节点
+        ListNode pre = ans;
+        for(int i = 0;i < m - 1;++i) {
+            pre = pre.next;
+        }
+        // p位第m个节点，实际上m不需要动，我们只需要把m后面的。n及n之前的。
+        // 插入到pre后面即可
+        ListNode p = pre.next;
+
+        for(int i = 0;i < n - m;++i) {
+            ListNode moveNode = p.next;
+            p.next = moveNode.next;
+            moveNode.next = pre.next;
+            pre.next = moveNode;
+        }
+        
+        return ans.next;
+    }
+}
+

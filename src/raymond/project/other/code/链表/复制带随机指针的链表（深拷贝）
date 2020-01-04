@@ -1,0 +1,66 @@
+/*
+ * @lc app=leetcode.cn id=138 lang=java
+ *
+ * [138] 复制带随机指针的链表
+ * 将每个节点都复制一遍，然后拷贝随机指针：副本节点的随机指针是原节点的随机指针的下一个节点；
+ */
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node next;
+    public Node random;
+
+    public Node() {}
+
+    public Node(int _val,Node _next,Node _random) {
+        val = _val;
+        next = _next;
+        random = _random;
+    }
+};
+*/
+class Solution {
+
+    public Node copyRandomList(Node head) {
+        if(head == null) {
+            return head;
+        }
+
+        // 记录节点的位置和对应的地址，比如第一个几点则为<1, head>
+        HashMap<Node, Node> map = new HashMap<Node, Node>();
+
+        // 记录头节点额外处理
+        Node oldHead = head;
+        int pos = 1;
+        Node newHead = new Node(head.val, null, null);
+        Node ans = newHead;
+        head = head.next;
+        map.put(oldHead, newHead);
+        
+        // 遍历一遍原链表，将next值赋值，并记录random在链表中的顺序
+        while(head != null) {
+            
+            Node tmp = new Node(head.val, null, null);
+            map.put(head, tmp);
+            newHead.next = tmp;
+            newHead = tmp;
+
+            head = head.next;
+        }
+
+        // 到这里val和next都是正确的了。因为要深拷贝，所以我们要把
+        // 新链表里面的random指向新链表中的节点
+        head = oldHead;
+        newHead = ans;
+
+        while(head != null) {
+            newHead.random = map.get(head.random);
+            head = head.next;
+            newHead = newHead.next;
+        }
+
+        return ans;
+    }
+}
+

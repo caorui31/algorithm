@@ -1,0 +1,69 @@
+import java.util.Collections;
+import java.util.List;
+import java.util.Queue;
+
+import javax.swing.tree.TreeNode;
+
+/*
+ * @lc app=leetcode.cn id=144 lang=java
+ *
+ * [144] 二叉树的前序遍历
+ */
+
+// @lc code=start
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        if (root == null) {
+            return Collections.EMPTY_LIST;
+        }
+        List<Integer> list = new ArrayList<Integer>();
+
+        Stack<TreeNode> s = new Stack<TreeNode>();
+        s.push(root);
+
+        while (!s.isEmpty()) {
+            
+            TreeNode node = s.pop();
+            list.add(node.val);
+            
+            if (node.right != null) {
+                s.push(node.right);
+            }
+            
+            if (node.left != null) {
+                s.push(node.left);
+            }
+        }
+        
+        return list;
+    
+
+        // if(root == null) {
+        //     return Collections.EMPTY_LIST;
+        // }
+
+        // List<Integer> ans = new ArrayList<>();
+        // ans.add(root.val);
+
+        // if(root.left != null){
+        //     ans.addAll(preorderTraversal(root.left));
+        // }
+
+        // if(root.right != null) {
+        //     ans.addAll(preorderTraversal(root.right));
+        // }
+
+        // return ans;
+    }
+}
+// @lc code=end
+

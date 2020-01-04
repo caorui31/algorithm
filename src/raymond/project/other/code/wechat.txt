@@ -1,0 +1,99 @@
+第一题：
+
+package raymond.project.wechat;
+
+public class SolutionOne {
+
+    public int getMaxS(int M[][], int row, int col) {
+        // 以长宽较小的边为周长，这里提前+1是为了后面进入循环--
+        int size = Math.min(row, col) + 1;
+
+        boolean isFind = false;
+        do {
+            size--;
+            isFind = isFindAnswer(M, row, col, size);
+        } while (!isFind && size > 0);
+
+        return isFind ? size * size : 0;
+    }
+
+    // 在当前的边长（size）下是否有符合条件的正方形
+    private boolean isFindAnswer(int M[][], int row, int col, int size) {
+        for(int i = 0; i <= row-size; ++i) {
+            for(int j = 0;j <= col-size;++j) {
+                if(isAllOne(M, i, j, size)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // 以startRow和startCol为起始行列，以size为周长，判断该正方形内部是否都为1
+    private boolean isAllOne(int M[][], int startRow, int startCol, int size) {
+        for(int i = 0;i < size;++i) {
+            for(int j = 0;j < size;++j) {
+                if(M[startRow + i][startCol + j] != 1) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) throws Exception{
+        int M[][] = {{1,0,1,0,0},{1,0,1,1,1},{1,1,1,1,1},{1,0,1,0,1}};
+        SolutionOne solutionOne = new SolutionOne();
+
+        System.out.println(solutionOne.getMaxS(M, 4, 5));
+    }
+}
+
+
+第二题
+
+package raymond.project.wechat;
+
+import raymond.project.BinaryTreeNode;
+
+public class SolutionTwo {
+
+    public int getDistance(BinaryTreeNode root) {
+        if(root == null) {
+            return 0;
+        }
+
+        int leftDistance = 0, rightDistance = 0;
+        if(root.left != null) {
+            leftDistance = getMaxDistance(root.left) + 1;
+        }
+        if(root.right != null) {
+            rightDistance = getMaxDistance(root.right) + 1;
+        }
+
+        return leftDistance + rightDistance;
+    }
+
+    public int getMaxDistance(BinaryTreeNode root) {
+        if(root == null) {
+            return 0;
+        }
+
+        return Math.max(getMaxDistance(root.left), getMaxDistance(root.right)) +1;
+    }
+
+    public static void main(String[] args) throws Exception{
+        BinaryTreeNode root = new BinaryTreeNode(1);
+        root.left = new BinaryTreeNode(1);
+        root.right = new BinaryTreeNode(1);
+        root.left.left = new BinaryTreeNode(1);
+        root.left.right = new BinaryTreeNode(1);
+        root.right.right = new BinaryTreeNode(1);
+        root.right.left = new BinaryTreeNode(1);
+        root.right.left.right = new BinaryTreeNode(1);
+        root.left.right = new BinaryTreeNode(1);
+        root.right.right.right = new BinaryTreeNode(1);
+        SolutionTwo solutionTwo = new SolutionTwo();
+        System.out.println(solutionTwo.getDistance(root));
+    }
+}

@@ -1,0 +1,67 @@
+/*
+ * @lc app=leetcode.cn id=725 lang=java
+ *
+ * [725] 分隔链表
+ * /
+ * 给定一个头结点为 root 的链表, 编写一个函数以将链表分隔为 k 个连续的部分。
+ * 每部分的长度应该尽可能的相等: 任意两部分的长度差距不能超过 1，也就是说可能有些部分为 null。
+ * 这k个部分应该按照在链表中出现的顺序进行输出，并且排在前面的部分的长度应该大于或等于后面的长度。
+ * 返回一个符合上述规则的链表的列表。
+ * 举例： 1->2->3->4, k = 5 // 5 结果 [ [1], [2], [3], [4], null ]
+ * 
+ */
+
+// @lc code=start
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode[] splitListToParts(ListNode root, int k) {
+            
+        // 计算链表的长度
+        int length = getLength(root);
+
+        ListNode[] ans = new ListNode[k];
+        int pos = 0;
+        
+        // 例如链表一共10个元素，k=3代表分为3个链表
+        // m = 10 / 3 = 3，则代表每个链表最少有3个节点
+        // n = 10 % 3 = 1, 且前面链表的长度比后面长，代表前面[n]个链表需要有[m]+1个节点
+        int m = length / k;
+        int n = length % k;
+        while(root != null) {
+            int curLength = n > 0 ? m + 1 : m;
+            n--;
+            ans[pos++] = root;
+            root = cutList(root, curLength);
+        }
+        
+        return ans;
+    }
+
+    ListNode cutList(ListNode root, int cutLen) {
+        ListNode prev = null;
+        while(cutLen-- > 0) {
+            prev = root;
+            root = root.next;
+        }
+        prev.next = null;
+        return root;
+    }
+
+    int getLength(ListNode root) {
+        int ans = 0;
+        while(root != null) {
+            ++ans;
+            root = root.next;
+        }
+        return ans;
+    }
+}
+// @lc code=end
+

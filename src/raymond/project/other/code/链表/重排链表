@@ -1,0 +1,73 @@
+/*
+ * @lc app=leetcode.cn id=143 lang=java
+ *
+ * [143] 重排链表
+ * 
+ * 给定一个单链表 L：L0→L1→…→Ln-1→Ln ，
+ * 将其重新排列后变为： L0→Ln→L1→Ln-1→L2→Ln-2→…
+ * 你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
+ */
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public void reorderList(ListNode head) {
+        if(head == null || head.next == null) {
+            return ;
+        }
+
+        // 找到链表的中间节点。并链表拆分为两个链表
+        ListNode slow = head;
+        ListNode fast = head;
+        ListNode mid = head;
+        while(fast != null && fast.next != null) {
+            mid = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        mid.next = null;
+
+        // head / slow 分别为前后两个链表的开始
+        // 将后一个链表逆置
+        ListNode descList = revertList(slow);
+        ListNode ascList = head;
+        ListNode ans = new ListNode(-1);
+        ListNode tmp = null;
+        while(ascList != null && descList != null) {
+            tmp = ascList;
+            ascList = ascList.next;
+            ans.next = tmp;
+            ans = ans.next;
+            tmp = descList;
+            descList = descList.next;
+            ans.next = tmp;
+            ans = ans.next;
+        }
+
+        head = ans.next;
+    }
+
+    public ListNode revertList(ListNode head) {
+        if(head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode ans = new ListNode(-1);
+
+        ListNode tmp = null;
+        while(head != null) {
+            tmp = head;
+            head = head.next;
+            tmp.next = ans.next;
+            ans.next = tmp;
+        }
+
+        return ans.next;
+    }
+}
+

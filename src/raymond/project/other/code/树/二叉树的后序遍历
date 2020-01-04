@@ -1,0 +1,48 @@
+import java.util.Collection;
+import java.util.Collections;
+
+/*
+ * @lc app=leetcode.cn id=145 lang=java
+ *
+ * [145] 二叉树的后序遍历
+ */
+
+// @lc code=start
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        if (root == null) {
+            return Collections.EMPTY_LIST;
+        }
+        List<Integer> list = new ArrayList<Integer>();
+
+        Stack<TreeNode> s = new Stack<TreeNode>();
+        
+        s.push(root);
+        
+        while( !s.isEmpty() ) {
+            TreeNode node = s.pop();
+            if(node.left != null) {
+                s.push(node.left);
+            }
+            
+            if(node.right != null) {
+                s.push(node.right);
+            }
+            
+            list.add(0, node.val);
+        }
+        
+        return list;
+    }
+}
+// @lc code=end
+

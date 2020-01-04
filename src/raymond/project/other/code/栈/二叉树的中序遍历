@@ -1,0 +1,72 @@
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Stack;
+
+import javax.swing.tree.TreeNode;
+
+/*
+ * @lc app=leetcode.cn id=94 lang=java
+ *
+ * [94] 二叉树的中序遍历
+ */
+
+// @lc code=start
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        if(root == null) {
+            return Collections.EMPTY_LIST;
+        }
+
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+
+        List<Integer> ans = new ArrayList<>();
+        while(!stack.isEmpty()) {
+            while(stack.peek().left != null) {
+                stack.push(stack.peek().left);
+            }
+
+            while(!stack.isEmpty()) {
+                TreeNode node = stack.pop();
+                ans.add(node.val);
+
+                if(node.right != null) {
+                    stack.push(node.right);
+                    break;
+                }
+            }
+        }
+
+        return ans;
+
+        // if(root == null) {
+        //     return Collections.emptyList();
+        // }
+
+        // List<Integer> ans = new ArrayList<>();
+        // if(root.left != null) {
+        //     ans.addAll(inorderTraversal(root.left));
+        // }
+
+        // ans.add(root.val);
+
+        // if(root.right != null) {
+        //     ans.addAll(inorderTraversal(root.right));
+        // }
+
+        // return ans;
+    }
+}
+// @lc code=end
+
